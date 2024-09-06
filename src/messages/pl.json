@@ -1,0 +1,19 @@
+{
+  "HomePage": {
+    "title": "Witamy na mojej stronie",
+    "changeLanguage": "Zmień język na Angielski",
+    "toBlog": "Przejdź do bloga"
+  },
+  "BlogPage": {
+    "title": "Blog",
+    "description": "Czytaj nasze najnowsze posty",
+    "postTitle": "Tytuł posta",
+    "author": "Autor"
+  },
+  "Navigation": {
+    "home": "Strona Główna",
+    "blog": "Blog",
+    "contact": "Kontakt"
+  }
+
+}
