@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { useRouter, usePathname } from "next/navigation"; // Dodano usePathname
+import { useRouter, usePathname } from "next/navigation";
 import Logo from "./Logo";
 import SettingsDropdown from "./SettingsDropdown";
 import { useState } from "react";
@@ -10,13 +10,11 @@ import { useState } from "react";
 export default function Navigation({ locale }: { locale: string }) {
   const t = useTranslations("Navigation");
   const router = useRouter();
-  const pathname = usePathname(); // Pobranie aktualnej ścieżki
+  const pathname = usePathname();
   const [theme, setTheme] = useState<string>("light");
 
   const changeLanguage = (newLocale: string) => {
-    // Zmień tylko prefiks języka w URL
     const newPath = pathname.replace(`/${locale}`, `/${newLocale}`);
-    // Przejdź do nowego URL z nowym językiem
     router.push(newPath);
   };
 
@@ -32,10 +30,15 @@ export default function Navigation({ locale }: { locale: string }) {
   };
 
   return (
-    <div className="flex justify-between items-center bg-red-300 p-4 shadow-lg h-20">
-      <Logo />
-      <nav>
-        <ul className="flex space-x-6">
+    <div className="flex justify-between items-center bg-red-300 p-4 shadow-lg h-20 relative">
+      {/* Logo po lewej stronie */}
+      <div className="absolute left-4">
+        <Logo />
+      </div>
+
+      {/* Nawigacja wyśrodkowana */}
+      <div className="flex justify-center w-full">
+        <ul className="flex gap-12">
           {navItems.map((item, index) => (
             <li
               key={index}
@@ -45,8 +48,10 @@ export default function Navigation({ locale }: { locale: string }) {
             </li>
           ))}
         </ul>
-      </nav>
-      <div>
+      </div>
+
+      {/* SettingsDropdown po prawej stronie */}
+      <div className="absolute right-4">
         <SettingsDropdown
           changeLanguage={changeLanguage}
           locale={locale}

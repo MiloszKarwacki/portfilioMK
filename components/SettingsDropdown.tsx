@@ -1,7 +1,9 @@
-import { useState, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
+import { FaSun, FaMoon } from "react-icons/fa";
+import LanguageButton from "./LangueButton";
 
 interface SettingsDropdownProps {
-  changeLanguage: (language: string) => void;
+  changeLanguage: (newLocale: string) => void;
   locale: string;
   toggleTheme: (theme: string) => void;
 }
@@ -9,42 +11,54 @@ interface SettingsDropdownProps {
 export default function SettingsDropdown({
   changeLanguage,
   locale,
-  toggleTheme,
 }: SettingsDropdownProps) {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [selectedLang, setSelectedLang] = useState<string>(locale);
-  const [theme, setTheme] = useState<string>("light");
 
-  const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedLanguage = e.target.value;
-    setSelectedLang(selectedLanguage);
-    changeLanguage(selectedLanguage);
+  const handleLanguageChange = (language: string) => {
+    setSelectedLang(language);
+    changeLanguage(language);
   };
 
-  const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedTheme = e.target.value;
-    setTheme(selectedTheme);
-    toggleTheme(selectedTheme);
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
   };
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
 
   return (
-    <div className="relative flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-      <select
-        value={selectedLang}
-        onChange={handleLanguageChange}
-        className="px-4 py-2 bg-white text-red-500 font-semibold rounded-lg shadow hover:bg-red-500 hover:text-white transition-all sm:w-auto w-full"
+    <div className="flex items-center">
+      {/* Przycisk do zmiany motywu */}
+      <button
+        onClick={toggleTheme}
+        className="p-2 m-4 rounded-full bg-gray-200 dark:bg-gray-700 text-yellow-500 dark:text-yellow-300 transition-colors"
       >
-        <option value="en">English</option>
-        <option value="pl">Polski</option>
-      </select>
+        {theme === "light" ? <FaSun size={24} /> : <FaMoon size={24} />}
+      </button>
 
-      <select
-        value={theme}
-        onChange={handleThemeChange}
-        className="px-4 py-2 bg-white text-red-500 font-semibold rounded-lg shadow hover:bg-red-500 hover:text-white transition-all sm:w-auto w-full"
-      >
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
+      {/* Kafelki do zmiany języka */}
+      <div className="flex space-x-4">
+        <LanguageButton
+          label="PL"
+          selectedLang={selectedLang}
+          lang="pl"
+          handleLanguageChange={handleLanguageChange}
+        />
+
+        <LanguageButton
+          label="EN"
+          selectedLang={selectedLang}
+          lang="en"
+          handleLanguageChange={handleLanguageChange}
+        />
+      </div>
     </div>
   );
 }

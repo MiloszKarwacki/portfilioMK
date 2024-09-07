@@ -12,7 +12,6 @@ export default async function LocaleLayout({
 }) {
   const locale = params.locale || "en";
 
-  // Pobieranie wiadomości dla danego języka
   const messages = (await import(`../../src/messages/${locale}.json`)).default;
 
   return (
